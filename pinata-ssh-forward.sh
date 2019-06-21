@@ -25,8 +25,8 @@ docker run --name ${CONTAINER_NAME} \
 IP=`docker inspect --format '{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostIp }}' ${CONTAINER_NAME}`
 ssh-keyscan -p ${LOCAL_PORT} ${IP} > ${LOCAL_STATE}/known_hosts 2>/dev/null
 
-ssh -o "UserKnownHostsFile ${LOCAL_STATE}/known_hosts" -o 'PasswordAuthentication no' \
-  -A -p ${LOCAL_PORT} root@${IP} /root/ssh-find-agent.sh
+ssh -n -o "UserKnownHostsFile ${LOCAL_STATE}/known_hosts" -o 'PasswordAuthentication no' \
+  -A -p ${LOCAL_PORT} root@${IP} /root/ssh-find-agent.sh &
 
 echo 'Agent forwarding successfully started.'
 echo 'Run "pinata-ssh-mount" to get a command-line fragment that'
